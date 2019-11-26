@@ -100,6 +100,9 @@ void Klondike::Render() {
 	case FormShown::NewGameDialog:
 		RenderNewGame();
 		break;
+	case FormShown::SettingsDialog:
+		RenderSettings();
+		break;
 	}
 	RenderEverywhereAbove();
 
@@ -172,6 +175,9 @@ void Klondike::RenderNewGame() {
 	SDL_RenderCopy(renderer, storage->new_three_image, NULL, &newgame_btn3_pos);
 	SDL_RenderCopy(renderer, storage->cancel_big_button_image, NULL, &newgame_cancel_pos);
 }
+void Klondike::RenderSettings() {
+	// TODO
+}
 void Klondike::RenderEverywhereAbove() {
 	SDL_RenderCopy(renderer, storage->score_label_img, NULL, &scorelabel_pos);
 	SDL_RenderCopy(renderer, storage->time_label_img, NULL, &timelabel_pos);
@@ -201,6 +207,9 @@ void Klondike::Input() {
 			break;
 		case FormShown::NewGameDialog:
 			InputNewGame();
+			break;
+		case FormShown::SettingsDialog:
+			InputSettings();
 			break;
 		}
 	}
@@ -490,6 +499,9 @@ void Klondike::InputNewGame() {
 		break;
 	}
 }
+void Klondike::InputSettings() {
+	// TODO
+}
 
 void Klondike::Update() {
 	UpdateEverywhere();
@@ -508,6 +520,9 @@ void Klondike::Update() {
 		}
 	case FormShown::NewGameDialog:
 		UpdateNewGame();
+		break;
+	case FormShown::SettingsDialog:
+		UpdateSettings();
 		break;
 	}
 }
@@ -576,6 +591,7 @@ void Klondike::UpdateFinished() {
 	}
 }
 void Klondike::UpdateNewGame() {}
+void Klondike::UpdateSettings() {}
 
 void Klondike::DrawStock() {
 	if (layout.stock.empty()) {

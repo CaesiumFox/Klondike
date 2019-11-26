@@ -9,7 +9,8 @@ enum class GameState {
 
 enum class FormShown {
 	GamePlay = 0,
-	NewGameDialog = 1
+	NewGameDialog = 1,
+	SettingsDialog = 2
 };
 
 #endif

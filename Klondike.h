@@ -103,12 +103,14 @@ private:
 	void InputPaused();
 	void InputFinished();
 	void InputNewGame();
+	void InputSettings();
 
 	void RenderEverywhereBelow();
 	void RenderPlaying();
 	void RenderPaused();
 	void RenderFinished();
 	void RenderNewGame();
+	void RenderSettings();
 	void RenderEverywhereAbove();
 
 	void UpdateEverywhere();
@@ -116,6 +118,7 @@ private:
 	void UpdatePaused();
 	void UpdateFinished();
 	void UpdateNewGame();
+	void UpdateSettings();
 	
 public:
 	Klondike();
