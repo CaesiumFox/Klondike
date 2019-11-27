@@ -109,12 +109,7 @@ void Klondike::Render() {
 	SDL_RenderPresent(renderer);
 }
 void Klondike::RenderEverywhereBelow() {
-	if (gamemode == GameMode::OneCard) {
-		SDL_RenderCopy(renderer, storage->background, NULL, NULL);
-	}
-	else {
-		SDL_RenderCopy(renderer, storage->background_hardcore, NULL, NULL);
-	}
+	SDL_RenderCopy(renderer, storage->backgrounds[storage->settingBackground], NULL, NULL);
 }
 void Klondike::RenderPlaying() {
 	DrawStock();

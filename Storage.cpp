@@ -27,17 +27,16 @@ Storage::Storage(SDL_Renderer *renderer) {
 		cout << "Failed to load \"Textures\\Cards\\E.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load("Textures\\BG.png");
-	background = SDL_CreateTextureFromSurface(renderer, surface);
-	if (background == nullptr) {
-		cout << "Failed to load \"Textures\\BG.png\"!" << endl;
-		throw 1;
-	}
-	surface = IMG_Load("Textures\\BG_Hardcore.png");
-	background_hardcore = SDL_CreateTextureFromSurface(renderer, surface);
-	if (background_hardcore == nullptr) {
-		cout << "Failed to load \"Textures\\BG_Hardcore.png\"!" << endl;
-		throw 1;
+	bg_count = 2;
+	settingBackground = 0;
+	backgrounds = vector<SDL_Texture*>(bg_count);
+	for(int i = 0; i < bg_count; i++) {
+		surface = IMG_Load(("Textures\\BG" + to_string(i + 1) + ".png").c_str());
+		backgrounds[i] = SDL_CreateTextureFromSurface(renderer, surface);
+		if (backgrounds[i] == nullptr) {
+			cout << "Failed to load \"Textures\\BG" << i + 1 << ".png\"!" << endl;
+			throw 1;
+		}
 	}
 	surface = IMG_Load("Textures\\NG.png");
 	newgamebutton_img = SDL_CreateTextureFromSurface(renderer, surface);
@@ -171,8 +170,10 @@ Storage::~Storage() {
 	opened_card_images.~vector();
 	SDL_DestroyTexture(closed_card_image);
 	SDL_DestroyTexture(empty_place_image);
-	SDL_DestroyTexture(background);
-	SDL_DestroyTexture(background_hardcore);
+	for(int i = 0; i < bg_count; i++) {
+		SDL_DestroyTexture(backgrounds[i]);
+	}
+	backgrounds.~vector();
 	SDL_DestroyTexture(newgamebutton_img);
 	SDL_DestroyTexture(undobutton_img);
 	SDL_DestroyTexture(quitbutton_img);
