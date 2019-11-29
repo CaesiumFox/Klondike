@@ -261,10 +261,8 @@ string Storage::GetStrTime(time_t time) {
 }
 
 string Storage::GetCurrentStrTime() {
-	time_t* t = new time_t();
-	tm* lt = new tm();
-	*t = time(NULL);
-	localtime_s(lt, t);
+	time_t t = time_t();
+	tm* lt = localtime(&t);
 	string result;
 	if (lt->tm_hour < 10) {
 		result += " ";
