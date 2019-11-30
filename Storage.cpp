@@ -27,7 +27,7 @@ Storage::Storage(SDL_Renderer *renderer) {
 		cout << "Failed to load \"Textures\\Cards\\E.png\"!" << endl;
 		throw 1;
 	}
-	bg_count = 2;
+	bg_count = 3;
 	settingBackground = 0;
 	backgrounds = vector<SDL_Texture*>(bg_count);
 	for(int i = 0; i < bg_count; i++) {
@@ -72,6 +72,13 @@ Storage::Storage(SDL_Renderer *renderer) {
 	statsbutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (statsbutton_img == nullptr) {
 		cout << "Failed to load \"Textures\\Statistics.png\"!" << endl;
+		throw 1;
+	}
+	surface = IMG_Load("Textures\\Settings.png");
+	setbutton_img = SDL_CreateTextureFromSurface(renderer, surface);
+	if (setbutton_img == nullptr)
+	{
+		cout << "Failed to load \"Textures\\Settings.png\"!" << endl;
 		throw 1;
 	}
 	surface = IMG_Load("Textures\\Selected.png");
@@ -135,6 +142,12 @@ Storage::Storage(SDL_Renderer *renderer) {
 		cout << "Failed to load \"Textures\\NGWindow.png\"!" << endl;
 		throw 1;
 	}
+	surface = IMG_Load("Textures\\SettingsWindow.png");
+	settings_window_image = SDL_CreateTextureFromSurface(renderer, surface);
+	if (settings_window_image == nullptr) {
+		cout << "Failed to load \"Textures\\SettingsWindow.png\"!" << endl;
+		throw 1;
+	}
 	surface = IMG_Load("Textures\\CancelBigButton.png");
 	cancel_big_button_image = SDL_CreateTextureFromSurface(renderer, surface);
 	if (cancel_big_button_image == nullptr) {
@@ -180,6 +193,7 @@ Storage::~Storage() {
 	SDL_DestroyTexture(pausebutton_img);
 	SDL_DestroyTexture(playbutton_img);
 	SDL_DestroyTexture(statsbutton_img);
+	SDL_DestroyTexture(setbutton_img);
 	SDL_DestroyTexture(select_bound);
 	SDL_DestroyTexture(win_image);
 	SDL_DestroyTexture(pausedlabel_image);
@@ -262,7 +276,8 @@ string Storage::GetStrTime(time_t time) {
 
 string Storage::GetCurrentStrTime() {
 	time_t t = time_t();
-	tm* lt = localtime(&t);
+	tm* lt;
+	localtime_s(lt, &t);
 	string result;
 	if (lt->tm_hour < 10) {
 		result += " ";

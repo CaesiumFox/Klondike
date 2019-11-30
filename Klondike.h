@@ -37,6 +37,7 @@ private:
 	SDL_Rect ngb_pos;
 	SDL_Rect udb_pos;
 	SDL_Rect qb_pos;
+	SDL_Rect set_pos;
 
 	SDL_Rect scorelabel_pos;
 	SDL_Rect timelabel_pos;
@@ -49,6 +50,12 @@ private:
 	SDL_Rect newgame_btn1_pos;
 	SDL_Rect newgame_btn3_pos;
 	SDL_Rect newgame_cancel_pos;
+
+	SDL_Rect settings_window_pos;
+	SDL_Rect settings_bg1_pos;
+	SDL_Rect settings_bg2_pos;
+	SDL_Rect settings_bg3_pos;
+	SDL_Rect settings_cancel_pos;
 
 	bool running;
 	bool win;

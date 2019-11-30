@@ -37,13 +37,20 @@ Klondike::Klondike() {
 
 	pb_pos = { 0, 0, 32, 32 };
 	ngb_pos = { 0, 32, 32, 32 };
-	udb_pos = { 0, 64, 32, 32 };
+	udb_pos = {0, 64, 32, 32};
+	set_pos = {0, 96, 32, 32};
 	qb_pos = { WinWidth - 32, 0, 32, 32 };
 
 	newgame_window_pos = { WinWidth / 2 - 192, WinHeight / 2 - 160, 384, 320 };
 	newgame_btn1_pos = { newgame_window_pos.x + 64, newgame_window_pos.y + 64, 128, 128 };
 	newgame_btn3_pos = { newgame_window_pos.x + 192, newgame_window_pos.y + 64, 128, 128 };
 	newgame_cancel_pos = { newgame_window_pos.x + 128, newgame_window_pos.y + 224, 128, 64 };
+
+	settings_window_pos = { WinWidth / 2 - 320, WinHeight / 2 - 200, 640, 400 };
+	settings_bg1_pos = { settings_window_pos.x + 64, settings_window_pos.y + 64, 128, 128 };
+	settings_bg2_pos = {settings_window_pos.x + 256, settings_window_pos.y + 64, 128, 128};
+	settings_bg3_pos = {settings_window_pos.x + 448, settings_window_pos.y + 64, 128, 128};
+	settings_cancel_pos = { settings_window_pos.x + 256, settings_window_pos.y + 272, 128, 64 };
 
 	final_firework_1 = nullptr;
 	final_firework_2 = nullptr;
@@ -132,6 +139,7 @@ void Klondike::RenderPaused() {
 	SDL_RenderFillRect(renderer, NULL);
 	SDL_RenderCopy(renderer, storage->playbutton_img, NULL, &pb_pos);
 	SDL_RenderCopy(renderer, storage->newgamebutton_img, NULL, &ngb_pos);
+	SDL_RenderCopy(renderer, storage->setbutton_img, NULL, &set_pos);
 	SDL_RenderCopy(renderer, storage->pausedlabel_image, NULL, &youwin_pos);
 }
 void Klondike::RenderFinished() {
@@ -171,7 +179,23 @@ void Klondike::RenderNewGame() {
 	SDL_RenderCopy(renderer, storage->cancel_big_button_image, NULL, &newgame_cancel_pos);
 }
 void Klondike::RenderSettings() {
-	// TODO
+	SDL_RenderCopy(renderer, storage->empty_place_image, NULL, &stock_pos);
+	SDL_RenderCopy(renderer, storage->empty_place_image, NULL, &waste_pos);
+	for (int i = 0; i < 4; i++)
+		SDL_RenderCopy(renderer, storage->empty_place_image, NULL, &foundations_pos[i]);
+	for (int i = 0; i < 7; i++)
+		SDL_RenderCopy(renderer, storage->empty_place_image, NULL, &tableau_pos[i]);
+	SDL_RenderCopy(renderer, storage->undobutton_img, NULL, &udb_pos);
+	SDL_RenderCopy(renderer, storage->pausebutton_img, NULL, &pb_pos);
+	SDL_RenderCopy(renderer, storage->newgamebutton_img, NULL, &ngb_pos);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 64);
+	SDL_RenderFillRect(renderer, NULL);
+
+	SDL_RenderCopy(renderer, storage->settings_window_image, NULL, &settings_window_pos);
+	SDL_RenderCopy(renderer, storage->backgrounds[0], NULL, &settings_bg1_pos);
+	SDL_RenderCopy(renderer, storage->backgrounds[1], NULL, &settings_bg2_pos);
+	SDL_RenderCopy(renderer, storage->backgrounds[2], NULL, &settings_bg3_pos);
+	SDL_RenderCopy(renderer, storage->cancel_big_button_image, NULL, &settings_cancel_pos);
 }
 void Klondike::RenderEverywhereAbove() {
 	SDL_RenderCopy(renderer, storage->score_label_img, NULL, &scorelabel_pos);
@@ -432,6 +456,10 @@ void Klondike::InputPaused() {
 				shown = FormShown::NewGameDialog;
 				return;
 			}
+			if (SDL_PointInRect(&m, &set_pos)) {
+				shown = FormShown::SettingsDialog;
+				return;
+			}
 		}
 		break;
 	case SDL_KEYDOWN:
@@ -495,7 +523,43 @@ void Klondike::InputNewGame() {
 	}
 }
 void Klondike::InputSettings() {
-	// TODO
+	switch (event.type) {
+	case SDL_MOUSEBUTTONDOWN:
+		if (event.button.button == SDL_BUTTON_LEFT) {
+			SDL_Point m = { event.button.x, event.button.y };
+			if (SDL_PointInRect(&m, &settings_bg1_pos)) {
+				storage->settingBackground = 0;
+				shown = FormShown::GamePlay;
+				state = GameState::Paused;
+				return;
+			}
+			if (SDL_PointInRect(&m, &settings_bg2_pos)) {
+				storage->settingBackground = 1;
+				shown = FormShown::GamePlay;
+				state = GameState::Paused;
+				return;
+			}
+			if (SDL_PointInRect(&m, &settings_bg3_pos)) {
+				storage->settingBackground = 2;
+				shown = FormShown::GamePlay;
+				state = GameState::Paused;
+				return;
+			}
+			if (SDL_PointInRect(&m, &settings_cancel_pos)) {
+				shown = FormShown::GamePlay;
+				state = GameState::Paused;
+				return;
+			}
+		}
+		break;
+	case SDL_KEYDOWN:
+		switch (event.key.keysym.scancode) {
+		case SDL_Scancode::SDL_SCANCODE_ESCAPE:
+			shown = FormShown::GamePlay;
+			state = GameState::Paused;
+		}
+		break;
+	}
 }
 
 void Klondike::Update() {

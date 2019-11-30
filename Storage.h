@@ -16,6 +16,7 @@ public:
 	SDL_Texture* pausebutton_img;
 	SDL_Texture* playbutton_img;
 	SDL_Texture* statsbutton_img;
+	SDL_Texture* setbutton_img;
 	SDL_Texture* select_bound;
 	SDL_Texture* win_image;
 	SDL_Texture* pausedlabel_image;
