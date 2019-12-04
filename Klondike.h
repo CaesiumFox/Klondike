@@ -52,9 +52,7 @@ private:
 	SDL_Rect newgame_cancel_pos;
 
 	SDL_Rect settings_window_pos;
-	SDL_Rect settings_bg1_pos;
-	SDL_Rect settings_bg2_pos;
-	SDL_Rect settings_bg3_pos;
+	vector<SDL_Rect> settings_bg_pos;
 	SDL_Rect settings_cancel_pos;
 
 	bool running;

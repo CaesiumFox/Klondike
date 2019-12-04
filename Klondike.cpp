@@ -47,9 +47,10 @@ Klondike::Klondike() {
 	newgame_cancel_pos = { newgame_window_pos.x + 128, newgame_window_pos.y + 224, 128, 64 };
 
 	settings_window_pos = { WinWidth / 2 - 320, WinHeight / 2 - 200, 640, 400 };
-	settings_bg1_pos = { settings_window_pos.x + 64, settings_window_pos.y + 64, 128, 128 };
-	settings_bg2_pos = {settings_window_pos.x + 256, settings_window_pos.y + 64, 128, 128};
-	settings_bg3_pos = {settings_window_pos.x + 448, settings_window_pos.y + 64, 128, 128};
+	settings_bg_pos = vector<SDL_Rect>(3);
+	settings_bg_pos[0] = { settings_window_pos.x + 64, settings_window_pos.y + 64, 128, 128 };
+	settings_bg_pos[1] = {settings_window_pos.x + 256, settings_window_pos.y + 64, 128, 128};
+	settings_bg_pos[2] = {settings_window_pos.x + 448, settings_window_pos.y + 64, 128, 128};
 	settings_cancel_pos = { settings_window_pos.x + 256, settings_window_pos.y + 272, 128, 64 };
 
 	final_firework_1 = nullptr;
@@ -192,9 +193,9 @@ void Klondike::RenderSettings() {
 	SDL_RenderFillRect(renderer, NULL);
 
 	SDL_RenderCopy(renderer, storage->settings_window_image, NULL, &settings_window_pos);
-	SDL_RenderCopy(renderer, storage->backgrounds[0], NULL, &settings_bg1_pos);
-	SDL_RenderCopy(renderer, storage->backgrounds[1], NULL, &settings_bg2_pos);
-	SDL_RenderCopy(renderer, storage->backgrounds[2], NULL, &settings_bg3_pos);
+	for (int i = 0; i < storage->bg_count; i++) {
+		SDL_RenderCopy(renderer, storage->backgrounds[i], NULL, &settings_bg_pos[i]);
+	}
 	SDL_RenderCopy(renderer, storage->cancel_big_button_image, NULL, &settings_cancel_pos);
 }
 void Klondike::RenderEverywhereAbove() {
@@ -222,6 +223,8 @@ void Klondike::Input() {
 			case GameState::Finished:
 				InputFinished();
 				break;
+			default:
+				break;
 			}
 			break;
 		case FormShown::NewGameDialog:
@@ -229,6 +232,8 @@ void Klondike::Input() {
 			break;
 		case FormShown::SettingsDialog:
 			InputSettings();
+			break;
+		default:
 			break;
 		}
 	}
@@ -248,6 +253,8 @@ void Klondike::InputEverywhere() {
 	case SDL_QUIT:
 		running = false;
 		SaveFile();
+		break;
+	default:
 		break;
 	}
 }
@@ -437,7 +444,12 @@ void Klondike::InputPlaying() {
 		case SDL_Scancode::SDL_SCANCODE_ESCAPE:
 			state = GameState::Paused;
 			time_points.push_back(time(NULL));
+			break;
+		default:
+			break;
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -467,7 +479,12 @@ void Klondike::InputPaused() {
 		case SDL_Scancode::SDL_SCANCODE_ESCAPE:
 			state = GameState::Playing;
 			time_points.push_back(time(NULL));
+			break;
+		default:
+			break;
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -482,6 +499,8 @@ void Klondike::InputFinished() {
 				return;
 			}
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -518,7 +537,12 @@ void Klondike::InputNewGame() {
 		case SDL_Scancode::SDL_SCANCODE_ESCAPE:
 			shown = FormShown::GamePlay;
 			time_points.push_back(time(NULL));
+			break;
+		default:
+			break;
 		}
+		break;
+	default:
 		break;
 	}
 }
@@ -527,23 +551,13 @@ void Klondike::InputSettings() {
 	case SDL_MOUSEBUTTONDOWN:
 		if (event.button.button == SDL_BUTTON_LEFT) {
 			SDL_Point m = { event.button.x, event.button.y };
-			if (SDL_PointInRect(&m, &settings_bg1_pos)) {
-				storage->settingBackground = 0;
-				shown = FormShown::GamePlay;
-				state = GameState::Paused;
-				return;
-			}
-			if (SDL_PointInRect(&m, &settings_bg2_pos)) {
-				storage->settingBackground = 1;
-				shown = FormShown::GamePlay;
-				state = GameState::Paused;
-				return;
-			}
-			if (SDL_PointInRect(&m, &settings_bg3_pos)) {
-				storage->settingBackground = 2;
-				shown = FormShown::GamePlay;
-				state = GameState::Paused;
-				return;
+			for (int i = 0; i < storage->bg_count; i++) {
+				if (SDL_PointInRect(&m, &settings_bg_pos[i])) {
+					storage->settingBackground = i;
+					shown = FormShown::GamePlay;
+					state = GameState::Paused;
+					return;
+				}
 			}
 			if (SDL_PointInRect(&m, &settings_cancel_pos)) {
 				shown = FormShown::GamePlay;
@@ -557,7 +571,12 @@ void Klondike::InputSettings() {
 		case SDL_Scancode::SDL_SCANCODE_ESCAPE:
 			shown = FormShown::GamePlay;
 			state = GameState::Paused;
+			break;
+		default:
+			break;
 		}
+		break;
+	default:
 		break;
 	}
 }
