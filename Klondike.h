@@ -31,7 +31,8 @@ private:
 	vector<SDL_Rect> foundations_pos;
 	vector<SDL_Rect> tableau_pos; // the uppest card
 
-	SDL_Rect youwin_pos;
+	SDL_Point youwin_pos;
+	SDL_Point paused_pos;
 
 	SDL_Rect pb_pos;
 	SDL_Rect ngb_pos;
@@ -39,21 +40,22 @@ private:
 	SDL_Rect qb_pos;
 	SDL_Rect set_pos;
 
-	SDL_Rect scorelabel_pos;
-	SDL_Rect timelabel_pos;
-	SDL_Rect nowlabel_pos;
 	SDL_Point scorevalue_pos;
 	SDL_Point timevalue_pos;
 	SDL_Point nowvalue_pos;
 
 	SDL_Rect newgame_window_pos;
+	SDL_Point newgame_label_pos;
 	SDL_Rect newgame_btn1_pos;
 	SDL_Rect newgame_btn3_pos;
 	SDL_Rect newgame_cancel_pos;
+	SDL_Point newgame_cancel_text_pos;
 
 	SDL_Rect settings_window_pos;
+	SDL_Point settings_label_pos;
 	vector<SDL_Rect> settings_bg_pos;
 	SDL_Rect settings_cancel_pos;
+	SDL_Rect settings_cancel_text_pos;
 
 	bool running;
 	bool win;

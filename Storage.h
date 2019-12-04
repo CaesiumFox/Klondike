@@ -2,6 +2,7 @@
 #define _STORAGE_H_
 
 #include "Common.h"
+#include "Font.h"
 
 class Storage {
 public:
@@ -18,44 +19,20 @@ public:
 	SDL_Texture* statsbutton_img;
 	SDL_Texture* setbutton_img;
 	SDL_Texture* select_bound;
-	SDL_Texture* win_image;
-	SDL_Texture* pausedlabel_image;
-	SDL_Texture* score_label_img;
-	SDL_Texture* time_label_img;
-	SDL_Texture* now_label_img;
-	SDL_Texture* digits_tile;
 	SDL_Texture* particle;
 	SDL_Texture* particle_overlay;
 
-	SDL_Texture* newgame_window_image;
-	SDL_Texture* cancel_big_button_image;
 	SDL_Texture* new_one_image;
 	SDL_Texture* new_three_image;
 
-	SDL_Texture* settings_window_image;
 	SDL_Texture* preview_border_inactive;
 	SDL_Texture* preview_border_active;
 
-	//TTF_Font* font;
-
-	vector<SDL_Rect> digits_pos_on_tile;
+	Font* font;
 
 	// settings
 
 	int settingBackground;
-
-	static void DrawString(SDL_Renderer*, Storage*, string, SDL_Point &);
-	// the first - when the count is started
-	// even - when the count is paused
-	// odd - when the count is continued
-	static time_t TimeCut(vector<time_t> &time_points);
-	static string GetStrTime(time_t);
-	static string GetCurrentStrTime();
-
-	static void Encode4B(ofstream&, unsigned long);
-	static void Encode8B(ofstream&, unsigned long long);
-	static unsigned long Decode4B(ifstream&);
-	static unsigned long long Decode8B(ifstream&);
 
 	Storage(SDL_Renderer *ren);
 	~Storage();

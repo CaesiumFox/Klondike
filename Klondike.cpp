@@ -26,14 +26,13 @@ Klondike::Klondike() {
 	waste_hitbox = { (WinWidth / 2 - 464) + 160, 32, 160, 128 };
 	for (int i = 0; i < 4; i++) foundations_pos[i] = { (WinWidth / 2 - 464) + 416 + 128 * i, 32, 96, 128 };
 	for (int i = 0; i < 7; i++) tableau_pos[i] = { (WinWidth / 2 - 464) + 32 + 128 * i, 192, 96, 128 };
-	youwin_pos = { WinWidth / 2 - 128, WinHeight / 2 - 32, 256, 64 };
+	storage->font->Height = 64;
+	paused_pos = { (WinWidth - storage->font->GetWidth(u"PAUSED"s)) / 2, WinHeight / 2 - 32 };
+	youwin_pos = { (WinWidth - storage->font->GetWidth(u"YOU WIN!"s)) / 2, WinHeight / 2 - 32 };
 
-	scorelabel_pos = { (WinWidth / 2 - 464) + 32, 0, 128, 32 };
-	timelabel_pos = { (WinWidth / 2 - 464) + 288, 0, 128, 32 };
-	nowlabel_pos = { WinWidth - 256, WinHeight - 32, 128, 32 };
-	scorevalue_pos = { (WinWidth / 2 - 464) + 160 , 0};
-	timevalue_pos = { (WinWidth / 2 - 464) + 416 , 0 };
-	nowvalue_pos = { WinWidth - 128 , WinHeight - 32 };
+	scorevalue_pos = { (WinWidth / 2 - 464) + 32, 0 };
+	timevalue_pos = { (WinWidth / 2 - 464) + 288, 0 };
+	nowvalue_pos = { WinWidth - 256, WinHeight - 32 };
 
 	pb_pos = { 0, 0, 32, 32 };
 	ngb_pos = { 0, 32, 32, 32 };
@@ -41,17 +40,37 @@ Klondike::Klondike() {
 	set_pos = {0, 96, 32, 32};
 	qb_pos = { WinWidth - 32, 0, 32, 32 };
 
-	newgame_window_pos = { WinWidth / 2 - 192, WinHeight / 2 - 160, 384, 320 };
+	newgame_window_pos = {WinWidth / 2 - 192, WinHeight / 2 - 160, 384, 320};
+	storage->font->Height = 64;
+	newgame_label_pos = {
+		newgame_window_pos.x + (newgame_window_pos.w - storage->font->GetWidth(u"New Game")) / 2,
+		newgame_window_pos.y + 16
+	};
 	newgame_btn1_pos = { newgame_window_pos.x + 64, newgame_window_pos.y + 64, 128, 128 };
 	newgame_btn3_pos = { newgame_window_pos.x + 192, newgame_window_pos.y + 64, 128, 128 };
 	newgame_cancel_pos = { newgame_window_pos.x + 128, newgame_window_pos.y + 224, 128, 64 };
+	storage->font->Height = 32;
+	newgame_cancel_text_pos = {
+		newgame_cancel_pos.x + (newgame_cancel_pos.w - storage->font->GetWidth(u"Cancel")) / 2,
+		newgame_cancel_pos.y + 16
+	};
 
-	settings_window_pos = { WinWidth / 2 - 320, WinHeight / 2 - 200, 640, 400 };
-	settings_bg_pos = vector<SDL_Rect>(3);
-	settings_bg_pos[0] = { settings_window_pos.x + 64, settings_window_pos.y + 64, 128, 128 };
-	settings_bg_pos[1] = {settings_window_pos.x + 256, settings_window_pos.y + 64, 128, 128};
-	settings_bg_pos[2] = {settings_window_pos.x + 448, settings_window_pos.y + 64, 128, 128};
-	settings_cancel_pos = { settings_window_pos.x + 256, settings_window_pos.y + 272, 128, 64 };
+	settings_window_pos = { WinWidth / 2 - 400, WinHeight / 2 - 300, 800, 600 };
+	storage->font->Height = 64;
+	settings_label_pos = {
+		settings_window_pos.x + (settings_window_pos.w - storage->font->GetWidth(u"Settings")) / 2,
+		settings_window_pos.y + 16
+	};
+	settings_bg_pos = vector<SDL_Rect>(storage->bg_count);
+	settings_bg_pos[0] = { settings_window_pos.x + 64, settings_window_pos.y + 128, 128, 128 };
+	settings_bg_pos[1] = { settings_window_pos.x + 256, settings_window_pos.y + 128, 128, 128 };
+	settings_bg_pos[2] = { settings_window_pos.x + 448, settings_window_pos.y + 128, 128, 128 };
+	settings_cancel_pos = { settings_window_pos.x + 336, settings_window_pos.y + 504, 128, 64 };
+	storage->font->Height = 32;
+	settings_cancel_text_pos = {
+		settings_cancel_pos.x + (settings_cancel_pos.w - storage->font->GetWidth(u"Cancel")) / 2,
+		settings_cancel_pos.y + 16
+	};
 
 	final_firework_1 = nullptr;
 	final_firework_2 = nullptr;
@@ -141,7 +160,8 @@ void Klondike::RenderPaused() {
 	SDL_RenderCopy(renderer, storage->playbutton_img, NULL, &pb_pos);
 	SDL_RenderCopy(renderer, storage->newgamebutton_img, NULL, &ngb_pos);
 	SDL_RenderCopy(renderer, storage->setbutton_img, NULL, &set_pos);
-	SDL_RenderCopy(renderer, storage->pausedlabel_image, NULL, &youwin_pos);
+	storage->font->Height = 64;
+	storage->font->DrawString("PAUSED", renderer, paused_pos.x, paused_pos.y);
 }
 void Klondike::RenderFinished() {
 	DrawStock();
@@ -158,7 +178,8 @@ void Klondike::RenderFinished() {
 		if (final_firework_2) final_firework_2->Draw(renderer, storage);
 		if (final_firework_3) final_firework_3->Draw(renderer, storage);
 		if (final_firework_4) final_firework_4->Draw(renderer, storage);
-		SDL_RenderCopy(renderer, storage->win_image, NULL, &youwin_pos);
+		storage->font->Height = 64;
+		storage->font->DrawString("YOU WIN!", renderer, youwin_pos.x, youwin_pos.y);
 	}
 }
 void Klondike::RenderNewGame() {
@@ -174,10 +195,18 @@ void Klondike::RenderNewGame() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 64);
 	SDL_RenderFillRect(renderer, NULL);
 
-	SDL_RenderCopy(renderer, storage->newgame_window_image, NULL, &newgame_window_pos);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
+	SDL_RenderFillRect(renderer, &newgame_window_pos);
+	storage->font->Height = 64;
+	storage->font->DrawString("New Game", renderer, newgame_label_pos.x, newgame_label_pos.y);
 	SDL_RenderCopy(renderer, storage->new_one_image, NULL, &newgame_btn1_pos);
 	SDL_RenderCopy(renderer, storage->new_three_image, NULL, &newgame_btn3_pos);
-	SDL_RenderCopy(renderer, storage->cancel_big_button_image, NULL, &newgame_cancel_pos);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(renderer, &newgame_cancel_pos);
+	storage->font->Height = 32;
+	storage->font->Color = { 0, 0, 0, 255 };
+	storage->font->DrawString("Cancel", renderer, newgame_cancel_text_pos.x, newgame_cancel_text_pos.y);
+	storage->font->Color = { 255, 255, 255, 255 };
 }
 void Klondike::RenderSettings() {
 	SDL_RenderCopy(renderer, storage->empty_place_image, NULL, &stock_pos);
@@ -192,19 +221,25 @@ void Klondike::RenderSettings() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 64);
 	SDL_RenderFillRect(renderer, NULL);
 
-	SDL_RenderCopy(renderer, storage->settings_window_image, NULL, &settings_window_pos);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
+	SDL_RenderFillRect(renderer, &settings_window_pos);
+	storage->font->Height = 64;
+	storage->font->DrawString("Settings", renderer, settings_label_pos.x, settings_label_pos.y);
 	for (int i = 0; i < storage->bg_count; i++) {
 		SDL_RenderCopy(renderer, storage->backgrounds[i], NULL, &settings_bg_pos[i]);
 	}
-	SDL_RenderCopy(renderer, storage->cancel_big_button_image, NULL, &settings_cancel_pos);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(renderer, &settings_cancel_pos);
+	storage->font->Height = 32;
+	storage->font->Color = { 0, 0, 0, 255 };
+	storage->font->DrawString("Cancel", renderer, settings_cancel_text_pos.x, settings_cancel_text_pos.y);
+	storage->font->Color = { 255, 255, 255, 255 };
 }
 void Klondike::RenderEverywhereAbove() {
-	SDL_RenderCopy(renderer, storage->score_label_img, NULL, &scorelabel_pos);
-	SDL_RenderCopy(renderer, storage->time_label_img, NULL, &timelabel_pos);
-	SDL_RenderCopy(renderer, storage->now_label_img, NULL, &nowlabel_pos);
-	Storage::DrawString(renderer, storage, to_string(layout.score), scorevalue_pos);
-	Storage::DrawString(renderer, storage, Storage::GetStrTime(delay + Storage::TimeCut(time_points)), timevalue_pos);
-	Storage::DrawString(renderer, storage, Storage::GetCurrentStrTime(), nowvalue_pos);
+	storage->font->Height = 32;
+	storage->font->DrawString("Score: "s + to_string(layout.score), renderer, scorevalue_pos.x, scorevalue_pos.y);
+	storage->font->DrawString("Time: "s + ToolKit::GetStrTime(delay + ToolKit::TimeCut(time_points)), renderer, timevalue_pos.x, timevalue_pos.y);
+	storage->font->DrawString("Now: "s + ToolKit::GetCurrentStrTime(), renderer, nowvalue_pos.x, nowvalue_pos.y);
 	SDL_RenderCopy(renderer, storage->quitbutton_img, NULL, &qb_pos);
 }
 
@@ -864,9 +899,9 @@ void Klondike::SaveFile() {
 		file << char(0xFF);
 	}
 
-	Storage::Encode4B(file, *(unsigned long *)(&layout.score));
-	time_t new_delay = delay + Storage::TimeCut(time_points);
-	Storage::Encode8B(file, *(unsigned long long*)(&new_delay));
+	ToolKit::Encode4B(file, *(unsigned long *)(&layout.score));
+	time_t new_delay = delay + ToolKit::TimeCut(time_points);
+	ToolKit::Encode8B(file, *(unsigned long long*)(&new_delay));
 	file << (gamemode == GameMode::OneCard ? '1' : '3');
 	file.close();
 }
@@ -906,8 +941,8 @@ void Klondike::LoadFile() {
 			p.push_back(transform(c));
 		}
 	}
-	layout.score = Storage::Decode4B(file);
-	delay = Storage::Decode8B(file);
+	layout.score = ToolKit::Decode_u32_LE(file);
+	delay = ToolKit::Decode_u64_LE(file);
 	char gmc;
 	file.get(gmc);
 	gamemode = (gmc == '1' ? GameMode::OneCard : GameMode::ThreeCards);
