@@ -1,0 +1,10 @@
+# Excluding all VS folders
+Debug/
+Release/
+save_v_1.0.1/
+Klondike.vcxproj
+Klondike.vcxproj.filters
+Klondike.vcxproj.user
+
+# Excluding save file
+save.record

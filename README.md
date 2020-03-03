@@ -1,2 +1,0 @@
-# Klondike
-Popular card game
