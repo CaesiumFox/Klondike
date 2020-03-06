@@ -3,7 +3,9 @@
 Klondike::Klondike() {
 	srand((uint32_t)time(0));
 	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("Klondike", 100, 100, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	window = SDL_CreateWindow("Klondike", 100, 100, DM.w, DM.h, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
 	SDL_GetWindowSize(window, &WinWidth, &WinHeight);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	//SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);

@@ -1,0 +1,2 @@
+#!/bin/bash
+g++ Card.cpp Firework.cpp Klondike.cpp main.cpp Storage.cpp Font.cpp -o klondike_linux -D _OS_LINUX_ -l SDL2main -l SDL2 -l SDL2_image
