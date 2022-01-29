@@ -7,112 +7,112 @@ Storage::Storage(SDL_Renderer *renderer) {
 	SDL_Surface* surface;
 	for (int suit = 0; suit < 4; suit++) {
 		for (int rank = 0; rank < 13; rank++) {
-			surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Cards"s + FILE_SEPARATOR + suits[suit] + ranks[rank] + ".png"s).c_str());
+			surface = IMG_Load(("Textures/Cards/"s + suits[suit] + ranks[rank] + ".png"s).c_str());
 			opened_card_images[suit][rank] = SDL_CreateTextureFromSurface(renderer, surface);
 			if (opened_card_images[suit][rank] == nullptr) {
-				cout << "Failed to load \"" << "Textures"s + FILE_SEPARATOR + "Cards"s + FILE_SEPARATOR + ""s + suits[suit] + ranks[rank] + ".png"s << "\"!" << endl;
+				cout << "Failed to load \"" << "Textures/Cards/"s + suits[suit] + ranks[rank] + ".png"s << "\"!" << endl;
 				throw 1;
 			}
 		}
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Cards"s + FILE_SEPARATOR + "I.png").c_str());
+	surface = IMG_Load("Textures/Cards/I.png");
 	closed_card_image = SDL_CreateTextureFromSurface(renderer, surface);
 	if (closed_card_image == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Cards"s + FILE_SEPARATOR + "I.png\"!" << endl;
+		cout << "Failed to load \"Textures/Cards/I.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Cards"s + FILE_SEPARATOR + "E.png").c_str());
+	surface = IMG_Load("Textures/Cards/E.png");
 	empty_place_image = SDL_CreateTextureFromSurface(renderer, surface);
 	if (empty_place_image == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Cards"s + FILE_SEPARATOR + "E.png\"!" << endl;
+		cout << "Failed to load \"Textures/Cards/E.png\"!" << endl;
 		throw 1;
 	}
 	bg_count = 3;
 	settingBackground = 0;
 	backgrounds = vector<SDL_Texture*>(bg_count);
 	for(int i = 0; i < bg_count; i++) {
-		surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "BG" + to_string(i + 1) + ".png").c_str());
+		surface = IMG_Load(("Textures/BG" + to_string(i + 1) + ".png").c_str());
 		backgrounds[i] = SDL_CreateTextureFromSurface(renderer, surface);
 		if (backgrounds[i] == nullptr) {
-			cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "BG" << i + 1 << ".png\"!" << endl;
+			cout << "Failed to load \"Textures/BG" << i + 1 << ".png\"!" << endl;
 			throw 1;
 		}
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "NG.png").c_str());
+	surface = IMG_Load("Textures/NG.png");
 	newgamebutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (newgamebutton_img == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "NG.png\"!" << endl;
+		cout << "Failed to load \"Textures/NG.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "UD.png").c_str());
+	surface = IMG_Load("Textures/UD.png");
 	undobutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (undobutton_img == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "UD.png\"!" << endl;
+		cout << "Failed to load \"Textures/UD.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Quit.png").c_str());
+	surface = IMG_Load("Textures/Quit.png");
 	quitbutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (quitbutton_img == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Quit.png\"!" << endl;
+		cout << "Failed to load \"Textures/Quit.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Pause.png").c_str());
+	surface = IMG_Load("Textures/Pause.png");
 	pausebutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (pausebutton_img == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Pause.png\"!" << endl;
+		cout << "Failed to load \"Textures/Pause.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Play.png").c_str());
+	surface = IMG_Load("Textures/Play.png");
 	playbutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (playbutton_img == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Play.png\"!" << endl;
+		cout << "Failed to load \"Textures/Play.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Statistics.png").c_str());
+	surface = IMG_Load("Textures/Statistics.png");
 	statsbutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (statsbutton_img == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Statistics.png\"!" << endl;
+		cout << "Failed to load \"Textures/Statistics.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Settings.png").c_str());
+	surface = IMG_Load("Textures/Settings.png");
 	setbutton_img = SDL_CreateTextureFromSurface(renderer, surface);
 	if (setbutton_img == nullptr)
 	{
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Settings.png\"!" << endl;
+		cout << "Failed to load \"Textures/Settings.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Selected.png").c_str());
+	surface = IMG_Load("Textures/Selected.png");
 	select_bound = SDL_CreateTextureFromSurface(renderer, surface);
 	if (select_bound == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Selected.png\"!" << endl;
+		cout << "Failed to load \"Textures/Selected.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "Particle.png").c_str());
+	surface = IMG_Load("Textures/Particle.png");
 	particle = SDL_CreateTextureFromSurface(renderer, surface);
 	if (particle == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "Particle.png\"!" << endl;
+		cout << "Failed to load \"Textures/Particle.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "ParticleOverlay.png").c_str());
+	surface = IMG_Load("Textures/ParticleOverlay.png");
 	particle_overlay = SDL_CreateTextureFromSurface(renderer, surface);
 	if (particle_overlay == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "ParticleOverlay.png\"!" << endl;
+		cout << "Failed to load \"Textures/ParticleOverlay.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "NG_One.png").c_str());
+	surface = IMG_Load("Textures/NG_One.png");
 	new_one_image = SDL_CreateTextureFromSurface(renderer, surface);
 	if (new_one_image == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "NG_One.png\"!" << endl;
+		cout << "Failed to load \"Textures/NG_One.png\"!" << endl;
 		throw 1;
 	}
-	surface = IMG_Load(("Textures"s + FILE_SEPARATOR + "NG_Three.png").c_str());
+	surface = IMG_Load("Textures/NG_Three.png");
 	new_three_image = SDL_CreateTextureFromSurface(renderer, surface);
 	if (new_three_image == nullptr) {
-		cout << "Failed to load \"Textures"s + FILE_SEPARATOR + "NG_Three.png\"!" << endl;
+		cout << "Failed to load \"Textures/NG_Three.png\"!" << endl;
 		throw 1;
 	}
 	SDL_FreeSurface(surface);
-	font = new Font(renderer, "Fonts"s + FILE_SEPARATOR + "main_font.fl"s);
+	font = new Font(renderer, "Fonts/main_font.fl"s);
 	font->Height = 32;
 	font->Interval = 2;
 	font->Spacing = 2;

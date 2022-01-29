@@ -9,19 +9,8 @@
 #include <ctime>
 #include <cmath>
 
-
-#ifdef _OS_LINUX_
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
-#define FILE_SEPARATOR '/'
-#else
-#include <SDL.h>
-#include <SDL_image.h>
-//#include <SDL_ttf.h>
-
-#define FILE_SEPARATOR '\\'
-#endif
 
 using namespace std;
 
@@ -31,9 +20,9 @@ class ToolKit {
 public:
 	static string GetFileParentFolder(string filename) {
 		int i = filename.length() - 1;
-		for(; filename[i] != FILE_SEPARATOR && i >= 0; i--);
+		for(; filename[i] != '/' && i >= 0; i--);
 		if(i == -1) return "";
-		else return filename.substr(0, i) + FILE_SEPARATOR;
+		else return filename.substr(0, i) + '/';
 	}
 
 	static void Encode4B(ofstream& out, unsigned long v) {
@@ -223,12 +212,7 @@ public:
 
 	static string GetCurrentStrTime() {
 		time_t t = time(0);
-		#ifdef _OS_LINUX_
 		tm* lt = localtime(&t);
-		#else
-		tm* lt = new tm();
-		localtime_s(lt, &t);
-		#endif
 		string result;
 		if (lt->tm_hour < 10) {
 			result += " ";

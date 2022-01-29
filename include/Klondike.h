@@ -29,7 +29,7 @@ private:
 	SDL_Rect waste_pos;
 	SDL_Rect waste_hitbox;
 	vector<SDL_Rect> foundations_pos;
-	vector<SDL_Rect> tableau_pos; // the uppest card
+	vector<SDL_Rect> tableau_pos; // the top card
 
 	SDL_Point youwin_pos;
 	SDL_Point paused_pos;
